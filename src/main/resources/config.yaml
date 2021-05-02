@@ -1,0 +1,14 @@
+redis:
+  type: basic
+  name: my-redis-use-case
+  node:
+    type: redis
+    node: "127.0.0.1:6379"
+    clientName: person-app
+  redisCodec:
+    type: string
+  clientResources:
+    type: default
+    commandLatencyCollector:
+      type: default
+      enabled: false

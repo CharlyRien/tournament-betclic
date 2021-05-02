@@ -1,0 +1,11 @@
+<div *ngIf="entry">
+    <h2>{{entry.username | uppercase}} Details</h2>
+    <div><span>id: </span>{{entry.id}}</div>
+    <div>
+        <label for="entry-name">Username: </label>
+        <input id="entry-name" [(ngModel)]="entry.username" placeholder="name">
+    </div>
+    <div><span>score: </span>{{entry.points}}</div>
+    <div><span>rank: </span>{{entry.ranking}}</div>
+</div>
+
