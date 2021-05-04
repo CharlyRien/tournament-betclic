@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.BindsInstance
 import dagger.Component
@@ -26,11 +25,9 @@ fun main(args: Array<String>) {
 
 class TournamentApp : Application<TournamentConfiguration>() {
     override fun run(configuration: TournamentConfiguration, environment: Environment) {
-        val objectMapper = environment.objectMapper.registerKotlinModule()
         val tournamentAppComponent = DaggerTournamentAppComponent
             .builder()
             .redisConnection(redisBundle.connection)
-            .objectMapper(objectMapper)
             .build()
         environment.jersey().register(PlayerNotFoundExceptionMapper())
         environment.jersey().register(tournamentAppComponent.playerController())
@@ -67,9 +64,6 @@ interface TournamentAppComponent {
     interface Builder {
         @BindsInstance
         fun redisConnection(redisConnection: StatefulRedisConnection<String, String>): Builder
-
-        @BindsInstance
-        fun objectMapper(objectMapper: ObjectMapper): Builder
         fun build(): TournamentAppComponent
     }
 }

@@ -52,6 +52,7 @@ To build, test and run the backend:
 gradlew test
 gradlew clean run
 ```
+Then the API is accessible from localhost:9090/api/**
 
 The backend app can also be run with:
 ```sh
@@ -72,6 +73,19 @@ cd frontend
 ng serve --open
 ```
 when served the server which is watching your frontend files rebuild your files after files modifications.
+
+
+## _API_DOCS_
+------------
+The current endpoints are configured :
+| Method | Path | Usage | Query Example | Response Example
+| ------ | ------ | ------ | ------ |  ------ |
+| DELETE | /api/players | delete every player from the tournament | - | - |
+| GET | /api/players | return all players sorted by points (the one with the most points is the number one) | - | ```json [{ "id": "b75173cb-4bb1-4f20-9681-4bfb267d59fd", "username": "username1", "ranking": 1, "points": 50 },{"id": "6575e34d-2632-45f9-b6df-d5b1533b8293","username": "username2", "ranking": 2,"points": 30}]``` |
+| POST | /api/players | create a player | ```json { "username" : "A Username :)" }``` | ```json {"id":"6575e34d-2632-45f9-b6df-d5b1533b8293", "username": "A Username :)", "ranking": 1, "points": 0}``` |
+| GET | /api/players/{id} | retrieve information about a specific player | None | ```json {"id":"6575e34d-2632-45f9-b6df-d5b1533b8293", "username": "A Username :)", "ranking": 1, "points": 50}``` |
+| PATCH | /api/players/{id}/points | apply delta to the current score for a specific player | ```json { "delta" : "-10" }``` | ```json {"id":"6575e34d-2632-45f9-b6df-d5b1533b8293", "username": "A Username :)", "ranking": 1, "points": 40}``` |
+
 
 
 

@@ -1,6 +1,5 @@
 package tournament.repository
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import dagger.Module
 import dagger.Provides
 import tournament.infrastructure.redis.RedisClient
