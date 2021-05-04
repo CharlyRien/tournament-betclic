@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {LeaderboardEntry} from "./leaderboard/leaderboard-entry";
-import {Observable} from "rxjs";
-import {MessageService} from './message.service';
+import {Observable, Subject, timer} from "rxjs";
 import {HttpClient} from '@angular/common/http';
-import {tap} from "rxjs/operators";
 import {environment} from "../environments/environment";
+import {retry, share, switchMap, takeUntil} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +13,20 @@ export class LeaderboardService {
   apiPort = environment['API_REST_PORT'];
   apiUrl = environment['API_REST_URL'];
 
-  private leaderboardURL = 'players';
-
   getEntries(): Observable<Array<LeaderboardEntry>> {
-    return this.http.get<Array<LeaderboardEntry>>(`${this.apiUrl}:${this.apiPort}/players`).pipe(
-        tap(_ => this.log("leaderboard entries fetched."))
-    );
+    return timer(1, 3000).pipe(
+        switchMap(() => this.http.get<Array<LeaderboardEntry>>(`${this.apiUrl}:${this.apiPort}/api/players`)),
+        retry(),
+        share(),
+        takeUntil(this.stopPolling)
+    )
   }
 
-  private log(message: string) {
-    this.messageService.add(`LeaderboardService: ${message}`);
+  private stopPolling = new Subject();
+
+  ngOnDestroy() {
+    this.stopPolling.next();
   }
 
-
-  constructor(private http: HttpClient,
-              private messageService: MessageService) { }
+  constructor(private http: HttpClient) { }
 }

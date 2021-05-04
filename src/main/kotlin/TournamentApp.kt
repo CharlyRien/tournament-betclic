@@ -3,6 +3,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.BindsInstance
 import dagger.Component
 import io.dropwizard.Application
+import io.dropwizard.assets.AssetsBundle
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider
 import io.dropwizard.redis.RedisClientBundle
 import io.dropwizard.setup.Bootstrap
@@ -45,6 +46,7 @@ class TournamentApp : Application<TournamentConfiguration>() {
         bootstrap.objectMapper.registerKotlinModule()
         bootstrap.configurationSourceProvider = ResourceConfigurationSourceProvider()
         bootstrap.addBundle(redisBundle)
+        bootstrap.addBundle(AssetsBundle("/web/leaderboard/", "/"))
     }
 }
 

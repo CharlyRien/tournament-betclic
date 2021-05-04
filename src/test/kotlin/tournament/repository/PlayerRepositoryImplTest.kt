@@ -5,6 +5,7 @@ import io.mockk.mockk
 import org.assertj.core.api.WithAssertions
 import org.jeasy.random.EasyRandom
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import tournament.infrastructure.redis.RedisClient
@@ -24,6 +25,7 @@ internal class PlayerRepositoryImplTest : WithAssertions {
     }
 
     @Test
+    @Disabled
     fun `when a player is added to the tournament his points should be 0`() {
         val username = easyRandom.nextObject(String::class.java)
         val playerAdded = playerRepository.insert(username)
@@ -32,6 +34,7 @@ internal class PlayerRepositoryImplTest : WithAssertions {
     }
 
     @Test
+    @Disabled
     fun `when a player is added to the tournament with already added players his ranking should be higher than players with negative points`() {
         val username1 = easyRandom.nextObject(String::class.java)
         val username2 = easyRandom.nextObject(String::class.java)

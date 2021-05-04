@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  redis:
+    container_name: redis_server
+    image: "redis:6.2.2"
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+  tournament-betclic-dropwizard-kotlin:
+    build: .
+    container_name: tournament-betclic-dropwizard-kotlin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:

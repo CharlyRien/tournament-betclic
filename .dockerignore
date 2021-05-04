@@ -1,0 +1,11 @@
+.idea
+.gradle
+frontend/node_modules
+frontend/dist
+frontend/e2e
+frontend/docs
+.git
+.editorconfig
+.gitignore
+*.zip
+*.md

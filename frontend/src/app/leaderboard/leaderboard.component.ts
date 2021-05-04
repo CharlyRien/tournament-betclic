@@ -16,11 +16,10 @@ export class LeaderboardComponent implements OnInit {
 
   selectedEntry?: LeaderboardEntry;
   onSelect(entry: LeaderboardEntry): void {
-    this.messageService.add(`LeaderboardComponent: Selected leaderboard id=${entry.id}`);
     this.selectedEntry = entry;
   }
 
-  constructor(private leaderboardService: LeaderboardService, private messageService: MessageService) { }
+  constructor(private leaderboardService: LeaderboardService) { }
 
   ngOnInit(): void {
     this.leaderboardService
