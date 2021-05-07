@@ -34,10 +34,9 @@ With this method we use docker-compose to do different things :
 - build the backend (create fat jar with : gradle shadowJar)
 - create and start a redis server to be use by the backend
 - start the back-end app just built
+(The first time it can take time depending on your connection to download docker images: around 2-3 minutes)
 
-It's normal if that takes 
-
-after that you can normally see the frontend here : 
+After that you can normally see the frontend here : 
 
 http://localhost:8080/index.html
 
