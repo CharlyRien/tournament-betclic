@@ -47,14 +47,21 @@ to stop the server you can directly use the other bash file :
 
 ## _Build It Yourself_
 ------------
-Before using the wrapped gradle for the backend app:
- - you will need at least a [JDK 11](https://www.oracle.com/ca-fr/java/technologies/javase-jdk11-downloads.html) with a JAVA_HOME parametrized (for Windows)
- - also, you will need Docker to be able to test and to run effortlessly the database that the API will talk to.
+If you want to develop new features' frontend or backend side you are in the right section.
+
+This section will explain how to build, test and start this application manually without the bash script : `start.sh`
+
+First, you will need some prerequisites :
+ - At least a [JDK 11](https://www.oracle.com/ca-fr/java/technologies/javase-jdk11-downloads.html) with a JAVA_HOME parametrized (for Windows)
+ - Docker to be able to launch integration test that start the database that the backend talk to.
+ - NodeJS (v16.0.0+) and npm if your intention is to change the frontend
+ - Angular via npm : `npm install -g @angular/cli`
 
 To build, test and run the backend:
 
 ```sh
 gradlew test
+# start a redis server to be used by the server
 docker run --name my-redis-server -p 6379:6379 -d redis
 gradlew clean run
 ```
