@@ -10,8 +10,8 @@ There are two parts in this project :
 ------------
 The simple way to start the service with everything already configured is to use Docker-compose
 So, you will need to have : 
- * Docker
- * Docker-compose
+ * Docker (version used: 20.10.5)
+ * Docker-compose (version used: 1.29)
 
 Optionally you will need NodeJS (v.16.0.0), and the angular CLI node library if you want to serve frontend separately, 
 for development for example : 
@@ -35,6 +35,8 @@ With this method we use docker-compose to do different things :
 - create and start a redis server to be use by the backend
 - start the back-end app just built
 
+It's normal if that takes 
+
 after that you can normally see the frontend here : 
 
 http://localhost:8080/index.html
@@ -46,10 +48,15 @@ to stop the server you can directly use the other bash file :
 
 ## _Build It Yourself_
 ------------
+Before using the wrapped gradle for the backend app:
+ - you will need at least a [JDK 11](https://www.oracle.com/ca-fr/java/technologies/javase-jdk11-downloads.html) with a JAVA_HOME parametrized (for Windows)
+ - also, you will need Docker to be able to test and to run effortlessly the database that the API will talk to.
+
 To build, test and run the backend:
 
 ```sh
 gradlew test
+docker run --name my-redis-server -p 6379:6379 -d redis
 gradlew clean run
 ```
 Then the API is accessible from localhost:9090/api/**
@@ -57,6 +64,7 @@ Then the API is accessible from localhost:9090/api/**
 The backend app can also be run with:
 ```sh
 gradlew clean shadowJar
+docker run --name my-redis-server -p 6379:6379 -d redis
 java -jar build/libs/tournament-betclic-dropwizard.jar server config.yaml
 ```
 

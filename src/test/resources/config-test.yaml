@@ -1,0 +1,16 @@
+server:
+  rootPath: /api
+redis:
+  type: basic
+  name: my-tournament
+  node:
+    type: redis
+    node: "localhost:6379"
+    clientName: tournament-app
+  redisCodec:
+    type: string
+  clientResources:
+    type: default
+    commandLatencyCollector:
+      type: default
+      enabled: false

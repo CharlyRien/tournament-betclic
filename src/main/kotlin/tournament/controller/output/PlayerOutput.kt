@@ -1,4 +1,4 @@
-package tournament.controller
+package tournament.controller.output
 
 import java.util.*
 

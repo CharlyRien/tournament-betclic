@@ -5,6 +5,7 @@ import io.lettuce.core.ScoredValue
 import io.lettuce.core.SetArgs
 import tournament.domain.Player
 import tournament.infrastructure.redis.RedisClient
+import java.lang.RuntimeException
 import java.util.*
 import javax.inject.Inject
 
@@ -26,8 +27,8 @@ class PlayerRepositoryImpl @Inject constructor(
                     .zadd(redisLeaderboardKey, ScoredValue.just(0.0, playerIdString))
 
                 val rank = getRedisCommands()
-                    .zrank(redisLeaderboardKey, playerIdString)?.plus(1)
-                    ?: throw IllegalStateException("Player rank not available")
+                    .zrevrank(redisLeaderboardKey, playerIdString)?.plus(1)
+                    ?: throw PlayerNotFoundException()
 
                 Player(playerId, username, 0, rank.toInt())
             }
@@ -67,6 +68,10 @@ class PlayerRepositoryImpl @Inject constructor(
         val leaderBoardWithScores = getRedisCommands()
             .zrevrangebyscoreWithScores(redisLeaderboardKey, Range.unbounded()) ?: throw IllegalStateException("No Leaderboard found !")
 
+        if(leaderBoardWithScores.isEmpty()) {
+            return emptyList()
+        }
+
         val allPlayersUsername = getRedisCommands()
             .mget(*leaderBoardWithScores.map { it.value }.toTypedArray())
 
@@ -90,6 +95,7 @@ class PlayerRepositoryImpl @Inject constructor(
 
 }
 
-private const val redisLeaderboardKey: String = "testLeaderboard"
+private const val redisLeaderboardKey: String = "myLeaderboard"
 
-class PlayerNotFoundException : java.lang.IllegalArgumentException("Player not found")
+class PlayerNotFoundException : PlayerException("Player not found")
+open class PlayerException(override val message: String) : RuntimeException(message)

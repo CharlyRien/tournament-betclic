@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dagger.BindsInstance
 import dagger.Component
@@ -11,7 +12,7 @@ import io.lettuce.core.api.StatefulRedisConnection
 import org.eclipse.jetty.servlets.CrossOriginFilter
 import tournament.controller.PlayerController
 import tournament.controller.PlayerControllerModule
-import tournament.controller.PlayerNotFoundExceptionMapper
+import tournament.controller.PlayerExceptionMapper
 import tournament.repository.PlayerRepositoryModule
 import tournament.service.PlayerServiceModule
 import java.util.*
@@ -29,7 +30,7 @@ class TournamentApp : Application<TournamentConfiguration>() {
             .builder()
             .redisConnection(redisBundle.connection)
             .build()
-        environment.jersey().register(PlayerNotFoundExceptionMapper())
+        environment.jersey().register(PlayerExceptionMapper())
         environment.jersey().register(tournamentAppComponent.playerController())
         environment.enableCORSFilter()
     }
@@ -40,7 +41,9 @@ class TournamentApp : Application<TournamentConfiguration>() {
     }
 
     override fun initialize(bootstrap: Bootstrap<TournamentConfiguration>) {
-        bootstrap.objectMapper.registerKotlinModule()
+        val objectMapper = bootstrap.objectMapper
+        objectMapper.registerKotlinModule()
+        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true)
         bootstrap.configurationSourceProvider = ResourceConfigurationSourceProvider()
         bootstrap.addBundle(redisBundle)
         bootstrap.addBundle(AssetsBundle("/web/leaderboard/", "/"))

@@ -9,17 +9,17 @@ RUN npm install -g @angular/cli
 RUN ng build --configuration=production
 
 FROM gradle:6.8-jdk11 AS build-backend
-ENV APP_HOME=/usr/app/
+ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
 COPY build.gradle .
 COPY src/ ./src/
 COPY settings.gradle .
 COPY --from=build-frontend $APP_HOME/frontend/dist ./src/main/resources/web
-RUN gradle clean shadowJar --no-daemon
+RUN gradle clean shadowJar
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV ARTIFACT_NAME=tournament-betclic-dropwizard.jar
-ENV APP_HOME=/usr/app/
+ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
 COPY --from=build-backend $APP_HOME/build/libs/$ARTIFACT_NAME .
 

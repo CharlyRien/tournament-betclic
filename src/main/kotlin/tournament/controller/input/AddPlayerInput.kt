@@ -1,4 +1,4 @@
-package tournament.controller
+package tournament.controller.input
 
 import javax.validation.constraints.NotEmpty
 

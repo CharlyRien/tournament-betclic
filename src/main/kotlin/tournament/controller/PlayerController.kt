@@ -1,15 +1,16 @@
 package tournament.controller
 
+import tournament.controller.input.AddPlayerInput
+import tournament.controller.input.UpdatePlayerPointsInput
+import tournament.controller.output.PlayerOutput
 import tournament.domain.Player
 import tournament.service.AddPlayerToTournamentService
 import tournament.service.DeleteAllPlayersFromTournamentService
 import tournament.service.GetAllPlayersFromTournamentService
 import tournament.service.GetPlayerByIdService
 import tournament.service.UpdatePlayerPointsService
-import java.lang.IllegalArgumentException
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 import javax.ws.rs.Consumes
@@ -63,7 +64,8 @@ class PlayerController @Inject constructor(private val addPlayerToTournamentServ
     @PATCH
     @Produces(MediaType.APPLICATION_JSON)
     fun updatePlayerPoints(@PathParam("id") playerId: UUID,
-                           @NotNull @Valid playerPointsUpdateInput: UpdatePlayerPointsInput): PlayerOutput {
+                           @NotNull playerPointsUpdateInput: UpdatePlayerPointsInput
+    ): PlayerOutput {
         return updatePlayerPointsService
             .apply(playerId, playerPointsUpdateInput.delta)
             .toPlayerOutput()
